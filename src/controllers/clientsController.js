@@ -15,6 +15,9 @@ export const getClientByID = async (req, res) => {
   try {
     const clientID = req.params.id;
     const theClient = await Client.findById(clientID);
+    if (!theClient) {
+      return res.status(404).json({ message: "Client not found", data: null });
+    }
     res.json({ message: "Client fetched successfully", data: theClient });
   } catch (err) {
     res.status(500).json({ message: err.message, data: null });
@@ -41,23 +44,17 @@ export const editClient = async (req, res) => {
   try {
     const clientID = req.params.id;
     const newData = req.body;
-
     const updatedClient = await Client.findByIdAndUpdate(clientID, newData, {
       new: true,
       upsert: false,
       runValidators: true,
     });
-
     if (!updatedClient) {
-      // mongo returns Null if can't find the client by ID
       res.status(404).json({ message: `Client not found`, data: null });
     }
-
-    res.json({ message: 'Client updated successfully', data: updatedClient });
+    res.json({ message: "Client updated successfully", data: updatedClient });
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: err.message, data: null });// Internal server error
+    res.status(500).json({ message: err.message, data: null });
   }
 };
 

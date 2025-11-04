@@ -66,7 +66,7 @@ export const deleteLoan = async (req, res) => {
     if (!deletedLoan) {
       return res.status(404).json({ message: "Loan not found", data: null });
     }
-    res.json({ message: "Loan deleted sucessfully", data: deletedLoan });
+    res.json({ message: "Loan deleted successfully", data: deletedLoan });
   } catch (err) {
     res.status(500).json({ message: err.message, data: null });
   }
